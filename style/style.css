@@ -51,6 +51,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 50%;
+  background-size: cover;
 }
 
 .profile-img {
@@ -131,6 +132,10 @@ header {
 
 .header-content label:first-child span {
   font-size: 1.3rem;
+}
+
+.header-content label {
+  cursor: pointer;
 }
 
 .header-menu {
@@ -326,7 +331,8 @@ input, button, select {
 }
 
 .table-responsive {
-  overflow-x: auto;
+  width: 100%;
+  overflow: auto;
 }
 
 table {
@@ -374,4 +380,57 @@ table tbody tr {
   border: 2px solid #b0b0b0;
   height: 45px;
   width: 45px;
+}
+
+.client-info h4 {
+  color: #555;
+  font-size: .95rem;
+}
+
+.client-info small {
+  color: #777;
+}
+
+.actions span {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-right: .5rem;
+}
+
+.paid {
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+  color: var(--main-color);
+  background: #e5f8ed;
+  padding: .5rem 1rem;
+  border-radius: 20px;
+  font-size: .8rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  .analytics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .analytics {
+    grid-template-columns: 100%;
+  }
+  .sidebar {
+    left: -165px;
+    z-index: 90;
+  }
+  header {
+    left: 0;
+    width: 100%;
+  }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+  #menu-toggle:checked ~ .sidebar {
+    left: 165px;
+  }
 }
