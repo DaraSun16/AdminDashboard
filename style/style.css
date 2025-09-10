@@ -369,13 +369,18 @@ input, button, select {
   color: #666;
 }
 
-.add button {
+.add button, .add a {
   background: var(--main-color);
   color: #fff;
   height: 37px;
   border-radius: 4px;
   padding: 0rem 1rem;
   font-weight: 600;
+}
+
+.add a {
+  display: flex;
+  align-items: center;
 }
 
 .browse input {

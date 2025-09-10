@@ -31,21 +31,21 @@
               </a>
           </li>
           <li>
-              <a href="<?php $_SERVER['DOCUMENT_ROOT']?>.'/BO/_views/abonnes.php'">
+              <a href="<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_views/abonnes.php?zone=abonnes" class="<?php if(isset($_GET["zone"]) && $_GET["zone"] == "abonnes"){ echo "active";}?>">
                 <span class="las la-user-alt"></span>
                 <small>Abonnés</small>
               </a>
           </li>
           <li>
-              <a href="">
+              <a href="<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_views/auteurs.php?zone=auteurs" class="<?php if(isset($_GET["zone"]) && $_GET["zone"] == "auteurs"){ echo "active";}?>">
                 <span class="las la-envelope"></span>
-                <small>Mailbox</small>
+                <small>Auteurs</small>
               </a>
           </li>
           <li>
-              <a href="">
+              <a href="<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_views/livres.php?zone=livres" class="<?php if(isset($_GET["zone"]) && $_GET["zone"] == "livres"){ echo "active";}?>">
                 <span class="las la-clipboard-list"></span>
-                <small>Projects</small>
+                <small>Livres</small>
               </a>
           </li>
           <li>

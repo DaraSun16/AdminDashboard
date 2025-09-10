@@ -57,18 +57,77 @@ if (isset($_GET['action']) && $_GET['action'] == "modifAuteur") {
                 <input type="date" name="auteur_date_naissance" value="<?php echo $auteur->auteur_date_naissance; ?>">
             </div>
             <div>
+                <label for="">Nombre d'ouvrage de l'auteur :</label>
+                <input type="number" name="auteur_nbre_ouvrage" value="<?php echo $auteur->auteur_nbre_ouvrage; ?>">
+            </div>
+             <div>
                 <label for="">Bio de l'auteur :</label>
                 <textarea name="auteur_bio" value="<?php echo $auteur->auteur_bio; ?>"></textarea>
             </div>
             <div>
-                <label for="">Nombre d'ouvrage de l'auteur :</label>
-                <input type="number" name="auteur_nbre_ouvrage" value="<?php echo $auteur->auteur_nbre_ouvrage; ?>">
-            </div>
-            <div>
-                <input type="submit" value="Modifier" name="update_auteur">
+                <input type="submit" value="Enr" name="update_auteur">
             </div>
         </form>
+
+    <div class="records table_responsive">
+        <div class="record_header spaceBetween alignCenter">
+            <div class="add alignCenter">
+                <span>Entries</span>
+                <select name="#" id="#">
+                    <option value="#">ID</option>
+                </select>
+                <button>Add record</button>
+            </div>
+            <div class="browse alignCenter">
+                <input type="search" placeholder="Search" class="record_search">
+                <select name="#" id="#">
+                    <option value="#">Status</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><span class="las la-sort uppercase"></span> ABONNES</th>
+                        <th><span class="las la-sort uppercase"></span> DATE DE NAISSANCE</th>
+                        <th><span class="las la-sort uppercase"></span> ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    while ($sA = $selectAbonnes->fetch(PDO::FETCH_OBJ)) {
+                    ?>
+                        <tr>
+                            <td>#<?php echo $sA->id_abonne; ?></td>
+                            <td>
+                                <div class="client alignCenter">
+                                    <div class="profile_img_he bg_img"></div>
+                                    <div class="client-info">
+                                        <h4 class="capitalize"><?php echo $sA->abonne_prenom; ?> <?php echo $sA->abonne_nom; ?></h4>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><?php echo $sA->abonne_date_naissance; ?></td>
+                            <td>
+                                <div class="actions">
+                                    <span class="lab la-telegram-plane"></span>
+                                    <a href="abonnes.php?zone=abonnes&action=modifAbonne&id=<?php echo $sA->id_abonne; ?>"><span class="las la-eye"></span></a>
+                                    <span class="las la-ellipsis-v"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <?php
+    
 
 } else {
     $selectAuteurs = $db->prepare('SELECT * FROM auteurs');
@@ -165,13 +224,13 @@ if (isset($_GET['action']) && $_GET['action'] == "modifAuteur") {
                                 <div class="client alignCenter">
                                     <div class="profile_img_he bg_img"></div>
                                     <div class="client-info">
-                                        <h4 class="capitalize"><?php echo $sA->auteur_prenom; ?> <?php echo $sA->auteur_nom; ?></h4>
+                                        <h4 ><?php echo $sA->auteur_prenom; ?> <?php echo $sA->auteur_nom; ?></h4>
                                     </div>
                                 </div>
                             </td>
+
                             <td><?php echo $sA->auteur_date_naissance; ?></td>
-                            <td><?php echo $sA->auteur_bio; ?></td>
-                            <td><?php echo $sA->auteur_nbre_ouvrage; ?></td>
+
                             <td>
                                 <div class="actions">
                                     <span class="lab la-telegram-plane"></span>
