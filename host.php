@@ -10,4 +10,6 @@ try{
   die;
 }
 
+session_start();
+
 ?>

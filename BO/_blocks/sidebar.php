@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<?php $_SERVER['DOCUMENT_ROOT']?>/style/style.css">
+  <link rel="stylesheet" href="/style/form.css">
   <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" >
   <title>Admin Dashboard</title>
+  <link
+			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+			rel="stylesheet"
+		/>
 </head>
 <body>
 
@@ -54,12 +59,18 @@
                 <small>Orders</small>
               </a>
           </li>
+          <?php
+          if(isset($_SESSION['auth']) && $_SESSION['auth']['role_level'] > 99){
+          ?>
           <li>
-              <a href="">
+              <a href="<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_views/admin.php?zone=admin" class="<?php if(isset($_GET["zone"]) && $_GET["zone"] == "admin"){ echo "active";}?>">
                 <span class="las la-tasks"></span>
-                <small>Tasks</small>
+                <small>Admin</small>
               </a>
           </li>
+          <?php
+          }
+          ?>
 
         </ul>
       </div>

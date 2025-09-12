@@ -21,8 +21,8 @@
         <div class="user">
           <div class="bg-img" style="background-image: url(<?php $_SERVER['DOCUMENT_ROOT']?>/imgs/img_1.jpeg);"></div>
 
+          <a href="<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_functions/logout.php"><span>Logout</span></a>
           <span class="las la-power-off"></span>
-          <span>Logout</span>
         </div>
       </div>
     </div>

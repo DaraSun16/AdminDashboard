@@ -1,6 +1,8 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'].'/host.php');
 
+if(isset($_SESSION['auth'])){
+
 include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/sidebar.php');
 
 include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/header.php');
@@ -11,6 +13,9 @@ $sousDomaine = "Home / Dashboard";
 include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/ariane.php');
 
 include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/analytics.php');
+
+var_dump($_SESSION['auth']);
+
 ?>
 
         <div class="records table-responsive">
@@ -314,5 +319,12 @@ include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/analytics.php');
 <?php
 
 include($_SERVER['DOCUMENT_ROOT'].'/BO/_blocks/footer.php');
+
+} else {
+
+header('Location: /BO/_views/login.php');
+exit();
+
+}
 
 ?>
