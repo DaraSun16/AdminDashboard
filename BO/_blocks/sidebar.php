@@ -1,3 +1,17 @@
+<?php
+
+$id_user = $_SESSION['auth']['id_user'];
+
+$selectUser = $db->prepare('SELECT * FROM users 
+  NATURAL JOIN roles
+  WHERE id_users = ?
+');
+
+$selectUser->execute([$id_user]);
+$user = $selectUser->fetch(PDO::FETCH_OBJ);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +37,8 @@
     <div class="side-content">
       <div class="profile">
           <div class="profile-img bg-img" style="background-image: url(<?php $_SERVER['DOCUMENT_ROOT']?>/imgs/img_3.jpeg);"></div>
-          <h4>David Green</h4>
-          <small>Art Director</small>
+          <h4><?php echo ucfirst($user->user_firstname);?> <?php echo ucfirst($user->user_name);?></h4>
+          <small><?php echo $user->role_name;?></small>
       </div>
 
       <div class="side-menu">
