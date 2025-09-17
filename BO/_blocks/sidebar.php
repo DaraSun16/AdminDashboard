@@ -4,7 +4,7 @@ $id_user = $_SESSION['auth']['id_user'];
 
 $selectUser = $db->prepare('SELECT * FROM users 
   NATURAL JOIN roles
-  WHERE id_users = ?
+  WHERE id_user = ?
 ');
 
 $selectUser->execute([$id_user]);

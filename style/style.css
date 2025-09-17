@@ -114,6 +114,14 @@
   padding-bottom: 1.2rem 0rem;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
 .side-menu a.active {
   background: #2B384E;
 }

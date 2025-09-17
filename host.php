@@ -12,4 +12,6 @@ try{
 
 session_start();
 
+include($_SERVER['DOCUMENT_ROOT'] . '/BO/_functions/fonctions.php');
+
 ?>

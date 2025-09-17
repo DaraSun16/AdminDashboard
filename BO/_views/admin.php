@@ -162,66 +162,66 @@ if (isset($_GET['action']) && $_GET['action'] == "addUser") {
         </div>
     </div>
 
+                            
+
 <?php
 
+} else if (isset($_GET['action']) && $_GET['action'] == "user") {
+
+    $id = $_GET['id'];
+
+    var_dump($_FILES['image']);
+
+    if(isset($_POST['add'])) {
+        $img = $_FILES['image']['name'];
+        $tmp_img = $_FILES['image']['tmp_name'];
+        $error = $_FILES['image']['error'];
+        $size = $_FILES['image']['size'];
+        $type = $_FILES['image']['type'];
+
+        $ext = explode('/', $type);
+        $img_ext = end($ext);
+
+        if($error == 0) {
+            if($size < 5000000){
+                if($img_ext === "jpg" || $img_ext === "jpeg" || $img_ext === "png"){
+
+                    $insertImg = $db->prepare('UPDATE users SET
+                    user_img = ?
+                    WHERE id_user = ?
+                    ');
+                    $insertImg->execute([$img, $id]);
+
+                    move_uploaded_file($tmp_img, $_SERVER['DOCUMENT_ROOT'].'/bo/_imgs/admin/'.$img);
+
+                    echo "<script language='javascript'>
+                    document.location.replace('admin.php.zone=admin')
+                    <?script>";
+                }
+            }
+        }
+    }
+
+    ?>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept=".jpeg, .png, .jpg">
+        <input type="submit" value="Ajouter" name="add">
+    </form>
+
+    <?php
+
 } else {
-$selectAuteurs = $db->prepare('SELECT * FROM auteurs');
-$selectAuteurs->execute();
 
-//AJOUTER UN AUTEUR
+$selectAllUsers = $db->prepare('SELECT * FROM users
+NATURAL JOIN roles
+NATURAL JOIN civilites
+');
 
-//Fonctionnalité d'ajout d'un abonnée
-if (isset($_POST['add_auteur'])) {
-    $prenom = htmlspecialchars($_POST['auteur_prenom']);
-    $nom = htmlspecialchars($_POST['auteur_nom']);
-    $date = $_POST['auteur_date_naissance'];
-    $bio = htmlspecialchars($_POST['auteur_bio']);
-    $num = $_POST['auteur_nbre_ouvrage'];
-
-
-    $add_auteur = $db->prepare('INSERT INTO auteurs SET
-        auteur_prenom = ?,
-        auteur_nom = ?,
-        auteur_date_naissance = ?,
-        auteur_bio = ?,
-        auteur_nbre_ouvrage = ?
-    ');
-
-    $add_auteur->execute([$prenom, $nom, $date, $bio, $num]);
-
-    //header('Location: /BO/_views/auteurs.php');
-    echo "<script language='javascript'>
-    document.location.replace('auteurs.php')
-    </script>";
-}
+$selectAllUsers->execute();
 
 ?>
 
-<form method="POST">
-    <div>
-        <label for="">Nom :</label>
-        <input type="text" name="auteur_nom">
-    </div>
-    <div>
-        <label for="">Prénom :</label>
-        <input type="text" name="auteur_prenom">
-    </div>
-    <div>
-        <label for="">Date de naîssance :</label>
-        <input type="date" name="auteur_date_naissance">
-    </div>
-    <div>
-        <label for="">Nombre d'ouvrage :</label>
-        <input type="numerique" name="auteur_nbre_ouvrage">
-    </div>
-    <div>
-        <label for="">Biographie :</label>
-        <textarea name="auteur_bio"></textarea>
-    </div>
-    <div>
-        <input type="submit" value="Enregistrer" name="add_auteur">
-    </div>
-</form>
 
 <div class="records table_responsive">
     <div class="record_header spaceBetween alignCenter">
@@ -244,256 +244,43 @@ if (isset($_POST['add_auteur'])) {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th><span class="las la-sort uppercase"></span> CLIENT</th>
-                    <th><span class="las la-sort uppercase"></span> TOTAL</th>
-                    <th><span class="las la-sort uppercase"></span> ISSUED DAT</th>
-                    <th><span class="las la-sort uppercase"></span> BALANCE</th>
+                    <th><span class="las la-sort uppercase"></span> UTILISATEURS</th>
+                    <th><span class="las la-sort uppercase"></span> ROLE</th>
+                    <th><span class="las la-sort uppercase"></span> CIVILITE</th>
                     <th><span class="las la-sort uppercase"></span> ACTIONS</th>
                 </tr>
             </thead>
             <tbody>
+                <?php
+                while($sAu = $selectAllUsers->fetch(PDO::FETCH_OBJ)){
+                    ?>
+
                 <tr>
-                    <td>#5033</td>
+                    <td>#<?php echo $sAu->id_user;?></td>
                     <td>
                         <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
+                            <div class="profile_img_he bg_img" style="background-image: url(<?php $_SERVER['DOCUMENT_ROOT']?>/BO/_imgs_admin/<?php echo $sAu->user_img;?>)"></div>
                             <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
+                                <h4><?php echo ucwords($sAu->user_firstname);?> <?php echo $sAu->user_name;?></h4>
+                                <small><?php echo $sAu->user_mail;?></small>
                             </div>
                         </div>
                     </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
+                    <td class="uppercase"><?php echo strtoupper($sAu->role_name);?></td>
+                    <td ckass="capitalize"><?php echo $sAu->civilite_nom;?></td>
                     <td>
                         <div class="actions">
-                            <span class="las la-telegram-plane"></span>
+                            <a href="admin.php?zone=admin&action=user&id=<?php echo $sAu->id_user;?>"><span class="las la-telegram-plane"></span></a>
                             <span class="las la-eye"></span>
                             <span class="las la-ellipsis-v"></span>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_she bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td><span class="paid textCenter">Paid</span></td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_she bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td><span class="paid textCenter">Paid</span></td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_she bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td><span class="paid textCenter">Paid</span></td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_she bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_she bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td>$205</td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#5033</td>
-                    <td>
-                        <div class="client alignCenter">
-                            <div class="profile_img_he bg_img"></div>
-                            <div class="client-info">
-                                <h4 class="capitalize">andrew bruno</h4>
-                                <small>bruno@crossover.org</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>$3171</td>
-                    <td>19 April, 2022</td>
-                    <td><span class="paid textCenter">Paid</span></td>
-                    <td>
-                        <div class="actions">
-                            <span class="las la-telegram-plane"></span>
-                            <span class="las la-eye"></span>
-                            <span class="las la-ellipsis-v"></span>
-                        </div>
-                    </td>
-                </tr>
+
+                <?php
+                }
+                ?>
+
             </tbody>
         </table>
     </div>
